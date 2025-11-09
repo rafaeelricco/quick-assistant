@@ -1,3 +1,11 @@
+"""
+Base command classes for the CQRS pattern implementation.
+
+This module provides the foundation for all command objects in the application.
+Commands represent write operations and are designed to be immutable through Pydantic's
+frozen model configuration, ensuring data integrity throughout the command processing pipeline.
+"""
+
 from abc import ABC
 from pydantic import BaseModel
 

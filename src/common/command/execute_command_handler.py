@@ -1,3 +1,11 @@
+"""
+Command execution utilities and orchestration for the CQRS system.
+
+This module provides the core execution logic for processing commands through handlers.
+It includes validation, error handling, authentication, and retry mechanisms to ensure
+robust command processing with proper HTTP response generation.
+"""
+
 from typing import Type, TypeVar, Callable, Awaitable, Optional, Dict, Any, assert_never
 from common.http_response import json_response as json_response, to_response
 from common.json_parser import try_parse_json

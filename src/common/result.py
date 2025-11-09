@@ -1,3 +1,11 @@
+"""
+Result type implementation for functional error handling.
+
+This module provides a Result type similar to Rust's Result enum, enabling
+functional composition and eliminating the need for try-catch blocks. It supports
+mapping, chaining, and traversal operations for robust error handling patterns.
+"""
+
 from typing import TypeVar, Generic, Callable, Union, List, Any
 from dataclasses import dataclass
 

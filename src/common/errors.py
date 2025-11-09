@@ -1,3 +1,11 @@
+"""
+Error handling types and utilities for the application.
+
+This module defines structured error classes for different HTTP error scenarios,
+providing consistent error handling and response formatting throughout the application.
+All error types are immutable and inherit from both Exception and BaseFrozen.
+"""
+
 from dataclasses import dataclass
 from typing import Optional, Any
 from common.base import BaseFrozen

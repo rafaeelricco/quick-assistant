@@ -1,3 +1,11 @@
+"""
+Command handler abstractions for the CQRS (Command Query Responsibility Segregation) pattern.
+
+This module defines the base interfaces and contracts for handling commands in the application.
+Command handlers process write operations and return HTTP responses, following the CQRS pattern
+to separate command processing from query handling.
+"""
+
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic
 from common.command.base_command import BaseCommand

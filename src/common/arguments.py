@@ -1,21 +1,47 @@
+"""
+Command-line argument parsing and configuration for the Quick Assistant CLI tool.
+
+This module provides utilities for parsing command-line arguments, defining command types,
+and configuring argument parsers for different CLI operations like translation and search.
+"""
+
 import argparse
 
 from typing import Dict, Any, Optional
 from pydantic import BaseModel
 from enum import Enum
 
+
 class CommandType(Enum):
-  TRANSLATE = "translate"
-  SEARCH = "search"
-  COMMIT = "commit"
-  HELP = "help"
+    """
+    Enumeration of supported command types in the Quick Assistant CLI.
+
+    Defines the different operations that can be performed by the CLI tool,
+    mapping command names to their string identifiers.
+    """
+    TRANSLATE = "translate"
+    SEARCH = "search"
+    COMMIT = "commit"
+    HELP = "help"
 
 class ParsedArgs(BaseModel, frozen=True):
+    """
+    Immutable container for parsed command-line arguments.
+
+    Holds the parsed values from CLI arguments and provides methods to determine
+    which command type was specified. Uses Pydantic's frozen model for immutability.
+    """
     translate: Optional[str] = None
     search: Optional[str] = None
     commit: Optional[str] = None
 
     def get_command_type(self) -> CommandType:
+        """
+        Determine the command type based on which argument was provided.
+
+        Returns:
+            CommandType: The identified command type, defaults to HELP if none specified.
+        """
         if self.translate:
             return CommandType.TRANSLATE
         elif self.search:
@@ -26,6 +52,13 @@ class ParsedArgs(BaseModel, frozen=True):
             return CommandType.HELP
 
 class TranslateCLIArguments:
+    """
+    Configuration class for translation CLI arguments.
+
+    Defines the command-line interface configuration for the translate command,
+    including help text, examples, and argument definitions.
+    """
+
     description = "Quick Assistant - CLI tool for productivity"
     flag = "--translate"
     help = "Text to translate from any language to English"
@@ -47,6 +80,13 @@ class TranslateCLIArguments:
 
 
 class SearchCLIArguments:
+    """
+    Configuration class for search CLI arguments.
+
+    Defines the command-line interface configuration for the search command,
+    including help text, examples, and argument definitions.
+    """
+
     description = "Quick Assistant - CLI tool for searching"
     flag = "--search"
     help = "Search for a term in the web"
@@ -69,7 +109,19 @@ class SearchCLIArguments:
         }
     
 def create_parser(config: Dict[str, Any]) -> argparse.ArgumentParser:
-    """Create and configure a generic argument parser."""
+    """
+    Create and configure a generic argument parser from configuration dictionary.
+
+    Args:
+        config: Dictionary containing parser configuration with keys:
+            - prog: Program name (default: "quick")
+            - description: Program description
+            - epilog: Text to display after help
+            - arguments: List of argument dictionaries with "flag" and "help" keys
+
+    Returns:
+        Configured ArgumentParser instance ready for parsing CLI arguments.
+    """
     parser = argparse.ArgumentParser(
         prog=config.get("prog", "quick"),
         description=config.get("description", ""),

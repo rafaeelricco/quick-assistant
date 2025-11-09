@@ -1,4 +1,18 @@
 def prompt_translate(target_input: str) -> str:
+    """
+    Generate a comprehensive translation prompt for bilingual analysis.
+
+    Creates a detailed prompt template for an AI translator that analyzes text in English or Portuguese,
+    providing translation, grammatical analysis, usage examples, and abbreviation explanations.
+    The generated prompt ensures all responses are in Brazilian Portuguese with specific formatting.
+
+    Args:
+        target_input: The text to be analyzed and translated
+
+    Returns:
+        Complete prompt string containing workflow instructions, formatting templates,
+        and guiding principles for the translation task
+    """
     return f"""You are an expert bilingual technical translator specializing in English (US) and Brazilian Portuguese. Your primary task is to receive input text, identify its language, and provide a detailed analysis and translation according to the rules below. All responses MUST be in Brazilian Portuguese.
 
     ### Workflow

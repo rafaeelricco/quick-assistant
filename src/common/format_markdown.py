@@ -1,3 +1,11 @@
+"""
+Markdown formatting utilities for console output.
+
+This module provides functions for rendering markdown content to the console
+with customizable padding and styling using the Rich library for enhanced
+terminal output formatting.
+"""
+
 from typing import List
 from rich.console import Console
 from rich.markdown import Markdown

@@ -1,3 +1,11 @@
+"""
+JSON parsing utilities with Pydantic validation.
+
+This module provides safe JSON parsing functionality that integrates with Pydantic models
+and returns Result types for functional error handling. It ensures type-safe data validation
+and provides detailed error messages for validation failures.
+"""
+
 from typing import Type, TypeVar, Dict, Any
 from common.result import Result, Ok, Err
 from pydantic import BaseModel, ValidationError

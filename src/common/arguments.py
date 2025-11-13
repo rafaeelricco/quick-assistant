@@ -8,7 +8,7 @@ and configuring argument parsers for different CLI operations like translation a
 import argparse
 
 from typing import Dict, Any, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from enum import Enum
 
 
@@ -24,13 +24,15 @@ class CommandType(Enum):
     COMMIT = "commit"
     HELP = "help"
 
-class ParsedArgs(BaseModel, frozen=True):
+class ParsedArgs(BaseModel):
     """
     Immutable container for parsed command-line arguments.
 
     Holds the parsed values from CLI arguments and provides methods to determine
     which command type was specified. Uses Pydantic's frozen model for immutability.
     """
+    model_config = ConfigDict(frozen=True)
+    
     translate: Optional[str] = None
     search: Optional[str] = None
     commit: Optional[str] = None

@@ -8,6 +8,7 @@ from common.command.base_command import BaseCommand
 from common.command.base_command_handler import BaseCommandHandler
 from common.command.execute_command_handler import BadRequest, json_response
 from common.format_markdown import Format
+from common.loading import spinner
 from common.prompts import prompt_translate
 
 
@@ -34,10 +35,11 @@ class Handler(BaseCommandHandler[Command]):
 
         translation_prompt = prompt_translate(command.content)
 
-        response = await genai.Client(api_key=api_key).aio.models.generate_content(
-            model='models/gemini-flash-latest',
-            contents=translation_prompt
-        )
+        with spinner(f"Translating to {command.target_language}…", spinner_style="dots"):
+            response = await genai.Client(api_key=api_key).aio.models.generate_content(
+                model='models/gemini-flash-latest',
+                contents=translation_prompt
+            )
 
         if not response.text:
             raise BadRequest(message="Empty response from translation service")

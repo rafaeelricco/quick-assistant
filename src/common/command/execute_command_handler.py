@@ -15,7 +15,6 @@ from common.command.base_command_handler import BaseCommandHandler
 from common.base import BaseFrozen
 from common.errors import Fail, Forbidden, Unauthorized, BadRequest, InternalServerError
 
-
 class BaseCommandResponse(BaseFrozen):
     """
     Immutable base class for command responses.
@@ -56,7 +55,7 @@ async def execute_command_handler(
     rcommand = try_parse_json(command_type, request_data)
     match rcommand.inner:
         case Err(error=error):
-            return to_response(BadRequest(f"Invalid request schema: {error}"))
+            return to_response(BadRequest(message=f"Invalid request schema: {error}"))
         case Ok(value=value):
             command = value
         case _:
@@ -74,7 +73,7 @@ async def execute_command_handler(
     except BadRequest as failure:
         return to_response(failure)
     except Exception as error:
-        return to_response(InternalServerError(f"Internal error: {str(error)}"))
+        return to_response(InternalServerError(message=f"Internal error: {str(error)}"))
 
 
 async def execute_command_handler_with_api_key(
@@ -101,7 +100,7 @@ async def execute_command_handler_with_api_key(
     """
     
     if api_key_header != required_api_key:
-        return to_response(Unauthorized("Invalid API key"))
+        return to_response(Unauthorized(message="Invalid API key"))
     
     return await execute_command_handler(command_type, request_data, command_handler)
 

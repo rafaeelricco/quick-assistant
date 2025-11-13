@@ -7,6 +7,7 @@ and defines response type structures for consistent API communication.
 
 from typing import Union, Any, Dict, TypedDict
 from common.errors import Fail, Forbidden, Unauthorized, BadRequest, InternalServerError
+from common.json import to_json
 
 
 def to_response(failure: Union[Fail, Forbidden, Unauthorized, BadRequest, InternalServerError]) -> tuple[Dict[str, Any], int]:
@@ -52,17 +53,25 @@ class TranslateResponse(TypedDict):
     translation: str
     success: bool
 
-def json_response(data: Dict[str, Any], status: int = 200) -> tuple[Dict[str, Any], int]:
+def json_response(data: Union[Dict[str, Any], Any], status: int = 200) -> tuple[Dict[str, Any], int]:
     """
     Create a standardized JSON response tuple for successful API responses.
 
     Wraps response data with appropriate HTTP status code for consistent API responses.
+    Automatically converts objects with to_json() method to dictionaries.
 
     Args:
-        data: The response data to be serialized as JSON
+        data: The response data (dict or object with to_json method)
         status: HTTP status code (default: 200 OK)
 
     Returns:
         Tuple of (response_data, status_code) ready for HTTP response handling
     """
-    return data, status
+    if isinstance(data, dict):
+        json_data = data
+    else:
+        converted = to_json(data)
+        if not isinstance(converted, dict):
+            raise ValueError(f"Expected dict from to_json, got {type(converted).__name__}")
+        json_data = converted
+    return json_data, status

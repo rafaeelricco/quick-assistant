@@ -1,18 +1,16 @@
-"""
-Error handling types and utilities for the application.
+"""Error handling types and utilities for the application.
 
 This module defines structured error classes for different HTTP error scenarios,
 providing consistent error handling and response formatting throughout the application.
-All error types are immutable and inherit from both Exception and BaseFrozen.
+All error types are immutable and inherit from Exception.
 """
 
 from dataclasses import dataclass
 from typing import Optional, Any
-from common.base import BaseFrozen
 
 
 @dataclass(frozen=True)
-class Fail(Exception, BaseFrozen):
+class Fail(Exception):
     """General failure with status code."""
     code: int
     message: str
@@ -20,26 +18,26 @@ class Fail(Exception, BaseFrozen):
 
 
 @dataclass(frozen=True)
-class Forbidden(Exception, BaseFrozen):
+class Forbidden(Exception):
     """403 Forbidden error."""
     message: str
 
 
 @dataclass(frozen=True)
-class Unauthorized(Exception, BaseFrozen):
+class Unauthorized(Exception):
     """401 Unauthorized error."""
     message: str
 
 
 @dataclass(frozen=True)
-class BadRequest(Exception, BaseFrozen):
+class BadRequest(Exception):
     """400 Bad Request error."""
     message: str
     details: Optional[Any] = None
 
 
 @dataclass(frozen=True)
-class InternalServerError(Exception, BaseFrozen):
+class InternalServerError(Exception):
     """500 Internal Server Error."""
     message: str
 

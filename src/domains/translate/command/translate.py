@@ -33,7 +33,7 @@ class Handler(BaseCommandHandler[Command]):
         if not api_key:
             raise BadRequest(message="GOOGLE_API_KEY not found in environment. Set it in .env file")
 
-        translation_prompt = prompt_translate(command.content)
+        translation_prompt = prompt_translate(command.content, command.target_language)
 
         with spinner(f"Translating to {command.target_language}…", spinner_style="dots"):
             response = await genai.Client(api_key=api_key).aio.models.generate_content(

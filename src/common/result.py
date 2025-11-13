@@ -37,6 +37,16 @@ class Result(Generic[F, S]):
     """
     inner: Unwrapped[F, S]
     
+    @staticmethod
+    def ok(value: S) -> 'Result[F, S]':
+        """Create a successful Result containing the given value."""
+        return Result(Ok(value))
+    
+    @staticmethod
+    def err(error: F) -> 'Result[F, S]':
+        """Create a failed Result containing the given error."""
+        return Result(Err(error))
+    
     def map(self, func: Callable[[S], T]) -> 'Result[F, T]':
         """Transform the success value if present."""
         match self.inner:

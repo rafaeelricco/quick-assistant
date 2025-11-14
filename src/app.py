@@ -11,14 +11,15 @@ import asyncio
 from dotenv import load_dotenv
 from typing import List, Optional 
 
-from common.arguments import CommandType, ParsedArgs, TranslateCLIArguments, create_parser
+from common.arguments import CommandType, ParsedArgs, QuickCLIConfig, create_parser
 from domains.translate.command.translate import execute_translate
+from domains.commit.command.commit import execute_commit
 
 class QuickAssistant:
     def __init__(self):
         """Initialize the CLI application."""
         load_dotenv()
-        self.parser = create_parser(TranslateCLIArguments.get_config())
+        self.parser = create_parser(QuickCLIConfig.get_config())
 
     def run(self, args: Optional[List[str]] = None) -> int:
         """Run the CLI application."""
@@ -32,8 +33,7 @@ class QuickAssistant:
                 case CommandType.TRANSLATE:
                     return asyncio.run(execute_translate(parsed_args.translate))
                 case CommandType.COMMIT:
-                    print("Commit functionality is not implemented yet.")
-                    return 1
+                    return asyncio.run(execute_commit(parsed_args.commit))
                 case CommandType.HELP:
                     self.parser.print_help()
                     return 1

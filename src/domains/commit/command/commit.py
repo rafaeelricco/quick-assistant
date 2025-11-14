@@ -15,13 +15,11 @@ from common.prompts import prompt_commit_message
 
 class Command(BaseCommand):
     """Commit command input."""
-
     action: str
 
 
 class CommandResponse(BaseFrozen, ToJSON):
     """Commit command output."""
-
     message: str
 
 

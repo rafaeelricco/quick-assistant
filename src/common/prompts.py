@@ -36,27 +36,23 @@ def prompt_translate(input: str, target_language: str) -> str:
     </instructions>
 
     <output_format>
-      Output ONLY valid GitHub-flavored Markdown in this structure:
+      **Source Language:** [Detected Language Name]  
+      **Target Language:** [Target Language Name (code)]
 
-      <translation_result>
-        **Source Language:** [Detected Language Name]  
-        **Target Language:** [Target Language Name (code)]
+      **Tradução:** [Translation result, alternatives separated by " / "]
 
-        **Tradução:** [Translation result, alternatives separated by " / "]
+      **Análise Linguística:** [Flowing prose paragraph analyzing grammar, naturalness, context]
 
-        **Análise Linguística:** [Flowing prose paragraph analyzing grammar, naturalness, context]
+      **Exemplos de Sentenças:**
 
-        **Exemplos de Sentenças:**
+      1. **[Source Language]:** [Example sentence]  
+        **[Target Language]:** [Translated sentence]
+      2. **[Source Language]:** [Example sentence]  
+        **[Target Language]:** [Translated sentence]
+      3. **[Source Language]:** [Example sentence]  
+        **[Target Language]:** [Translated sentence]
 
-        1. **[Source Language]:** [Example sentence]  
-          **[Target Language]:** [Translated sentence]
-        2. **[Source Language]:** [Example sentence]  
-          **[Target Language]:** [Translated sentence]
-        3. **[Source Language]:** [Example sentence]  
-          **[Target Language]:** [Translated sentence]
-
-        **Análise de Abreviações Técnicas:** [Analysis or "Não há abreviações técnicas no texto de entrada."]
-      </translation_result>
+      **Análise de Abreviações Técnicas:** [Analysis or "Não há abreviações técnicas no texto de entrada."]
     </output_format>
 
     <formatting_rules>

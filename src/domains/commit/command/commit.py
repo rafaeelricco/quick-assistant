@@ -1,15 +1,16 @@
 import os
+import subprocess
 
 from typing import Any, Dict, Optional
 from google import genai
+from google.genai import types
 
 from common.base import BaseFrozen, ToJSON
 from common.command.base_command import BaseCommand
 from common.command.base_command_handler import BaseCommandHandler
 from common.command.execute_command_handler import BadRequest, json_response, execute_command_handler
-from common.format_markdown import Format
 from common.loading import spinner
-from common.prompts import prompt_translate
+from common.prompts import prompt_commit_message
 
 
 class Command(BaseCommand):
@@ -31,20 +32,28 @@ class Handler(BaseCommandHandler[Command]):
             raise BadRequest(message="GOOGLE_API_KEY not found in environment. Set it in .env file")
         
         if command.action != "generate":
-            raise BadRequest(message=f"Unsupported commit action: {command.action}")
-        
-        print(f"Generating commit message for current directory: {os.getcwd()}")
+            print(f"Unsupported commit action: {command.action}")
+       
+        path = os.getcwd()
+        git_diff = subprocess.run(["git", "diff", "--staged"], capture_output=True, text=True, cwd=path)
 
-        # with spinner("Translating…", spinner_style="dots"):
-        #     response = await genai.Client(api_key=api_key).aio.models.generate_content(
-        #         model='models/gemini-flash-latest',
-        #         contents=translation_prompt
-        #     )
+        if not git_diff.stdout.strip():
+            print(f"No staged changes found. Use 'git add' to stage files.")
 
-        # if not response.text:
-        #     raise BadRequest(message="Empty response from translation service")
+        with spinner("Generating…", spinner_style="dots"):
+            response = await genai.Client(api_key=api_key).aio.models.generate_content( 
+                model='models/gemini-flash-latest',
+                contents=git_diff.stdout,
+                config=types.GenerateContentConfig(system_instruction=prompt_commit_message(git_diff.stdout)),
+            )
 
-        # Format.markdown(response.text)
+
+        if not response.text:
+            raise BadRequest(message="Empty response from translation service")
+
+        print('')
+        print(response.text)
+        print('')
 
         return json_response(CommandResponse(message="Commit message generation not yet implemented"))
 

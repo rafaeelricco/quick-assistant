@@ -1,6 +1,7 @@
 import os
 
 from typing import Any, Dict, Optional
+from pydantic import BaseModel
 from google import genai
 
 from common.base import BaseFrozen, ToJSON
@@ -11,6 +12,9 @@ from common.format_markdown import Format
 from common.loading import spinner
 from common.prompts import prompt_translate
 
+class Translate(BaseModel):
+    content: str
+    target_language: str = "pt"
 
 class Command(BaseCommand):
     """Translation command input."""
